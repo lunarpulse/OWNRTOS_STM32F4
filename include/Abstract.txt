@@ -1,0 +1,36 @@
+***************STM32F4-DISCO Pin Assignment************************************
+PROBE
+Probe 0  : PC1
+Probe 1	 : PC2
+Probe 2  : PC4
+Probe 3  : PC5
+
+ADC      : PA4
+
+GLCD_ST7735
+
+SCK  			:   PA5
+MOSI (SDA)		:   PA7
+RS				:	PA4
+DC				:	PA3
+CS				:	PA2
+https://www.stm32duino.com/viewtopic.php?t=486
+*************** STM32F4-NUCLEO Pin Assignment************************************
+Based on pinnout as indicated by User Manual (NOT what is written on the board)
+
+PROBE
+Probe 0  : PA8
+Probe 1	 : PA9
+Probe 2  : PA10
+Probe 3  : PA11
+
+ADC      : PA4
+
+
+GLCD_ST7735
+
+SCK  			:   PB10
+MOSI (SDA)		:   PC3
+RS				:	PB5
+DC				:	PB4
+CS				:	PB3
