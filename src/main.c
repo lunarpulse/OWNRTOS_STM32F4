@@ -27,6 +27,7 @@ void Task0(void)
 	while(1)
 	{
 		count0++;
+		osThread_Yield();
 	}
 
 }
@@ -36,6 +37,7 @@ void Task1(void)
 	while(1)
 	{
 		count1++;
+		osThread_Yield();
 	}
 
 }
@@ -45,6 +47,7 @@ void Task2(void)
 	while(1)
 	{
 		count2++;
+		osThread_Yield();
 	}
 
 }

@@ -7,7 +7,10 @@
 
 #include "stm32f4xx.h"
 #include "osKernel.h"
-#define SYSPRI3 		(*((volatile uint32_t *)0xE000ED20))
+
+#define SYSPRI3 		        (*((volatile uint32_t *)0xE000ED20))
+#define SYSTICK_INT_CNTL        (*((volatile uint32_t *)0xE000ED04))
+
 #define NUM_THREADS 	3
 #define STACK_SIZE 		100
 #define BUS_FREQ 		16000000
@@ -74,6 +77,9 @@ void osKernel_Launch(uint32_t quanta){
 	SysTick->LOAD= (quanta*millisPrescaler) - 1;
 	SysTick->CTRL = 0x00000007;
 	osSchedulerLaunch();
+}
+void osThread_Yield(void){
+	SYSTICK_INT_CNTL = 0x04000000; //Trigger SysTick Interrupt
 }
 /*
 void SysTick_Handler (void) //  save r0,r1,r2,r3,r12,lr,pc,psr

@@ -70,7 +70,7 @@ env.Append(CFLAGS = [
 env.Append(CCFLAGS = [
     '-ffreestanding',
     '-fno-move-loop-invariants',
-    '-Os', 
+    '-O3', 
     '-fmessage-length=0',
     '-fsigned-char',
     '-ffunction-sections',

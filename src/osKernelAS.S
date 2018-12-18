@@ -15,6 +15,7 @@ SysTick_Handler:          @ save r0,r1,r2,r3,r12,lr,pc,psr
     push    {r4-r11}        @ SAVE R4,R5,R6,R7,R8,R9,R10,R11
     ldr     r0, =currentPt  @ R0 POINTS TO currentPt
     ldr     r1, [r0]        @ R1= currentPt
+    str     sp, [r1]
     ldr     r1, [r1,#4]     @ R1 =currentPt->NEXT
     str     r1, [r0]        @ currentPt =R1          Circulating to the next task, a changeover happens here!
     ldr     sp, [r1]        @ sp= currentPt->STACKpT Pointing its own stack memory
