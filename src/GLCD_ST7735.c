@@ -176,23 +176,23 @@ static void setAddrWindow(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1) {
 void standard_Init_Cmd(void)
 {
 	LCD_CS0;            // CS=0   
-  LCD_RST0;           // RST=0 
+	LCD_RST0;           // RST=0
 
-  HAL_Delay(10);      
+	HAL_Delay(10);
 
-  LCD_RST1;           // RST=1
-  HAL_Delay(10);      
+	LCD_RST1;           // RST=1
+	HAL_Delay(10);
 
-   
-   lcd7735_sendCmd(0x11); 
 
-   HAL_Delay(120);      
+	lcd7735_sendCmd(0x11);
 
-   lcd7735_sendCmd (0x3A); //Set Color mode
-   lcd7735_sendData(0x05); //16 bits
-	 lcd7735_sendCmd (0x36);
-	 lcd7735_sendData(0x14);
-	 lcd7735_sendCmd (0x29);//Display on
+	HAL_Delay(120);
+
+	lcd7735_sendCmd (0x3A); //Set Color mode
+	lcd7735_sendData(0x05); //16 bits
+	lcd7735_sendCmd (0x36);
+	lcd7735_sendData(0x14);
+	lcd7735_sendCmd (0x29);//Display on
 }
 
 static void pushColor(uint16_t color) {

@@ -1,6 +1,7 @@
 #ifndef __STM32F4_RTOS_BSP_H
 #define __STM32F4_RTOS_BSP_H
 #include "stm32f4xx_hal.h"              // Keil::Device:STM32Cube HAL:Common
+#include "GLCD_ST7735.h"
 
 extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim3;
