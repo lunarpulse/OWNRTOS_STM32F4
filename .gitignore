@@ -40,4 +40,6 @@
 .vscode
 
 bin
-/Debug/
+Debug
+target
+.sconsign.dblite
