@@ -221,7 +221,7 @@ void TIM4_Init_Start(void)
 }
 void TIM5_Init_Start(void)
 {
-	 TIM2_Init();
+	 TIM5_Init();
 	
    HAL_TIM_Base_Start_IT(&htim5);
 
