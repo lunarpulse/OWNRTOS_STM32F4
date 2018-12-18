@@ -24,7 +24,9 @@ tcb_t tcbs[NUM_THREADS];
 tcb_t *currentPt;
 
 int32_t TCB_STACK[NUM_THREADS][STACK_SIZE];
-//void osSchedulerLaunch(void);
+
+extern void osSchedulerLaunch(void); //from osKernelAS.S
+
 void osKernel_Stack_Init(int i){ //argument i is thread number
 	tcbs[i].stackPt = &TCB_STACK[i][STACK_SIZE-16];
 	TCB_STACK[i][STACK_SIZE-1] = 0x01000000; //XPR
@@ -45,6 +47,9 @@ uint8_t osKernel_Add_Threads(
 	TCB_STACK[1][STACK_SIZE-2] = (int32_t)(task1); //PC
 	osKernel_Stack_Init(2);
 	TCB_STACK[2][STACK_SIZE-2] = (int32_t)(task2); //PC
+
+	currentPt = &tcbs[0];
+
 	asm("cpsie i" : /* Outputs */
 			: /* Inputs */
 			: "memory" /* Clobbers */);
@@ -66,7 +71,7 @@ void osKernel_Launch(uint32_t quanta){
 	SysTick->CTRL = 0;
 	SysTick->VAL = 0;
 	SYSPRI3 = (SYSPRI3 & 0x00FFFFFF) | 0xE0000000; // priority 7
-	SysTick->LOAD= (quanta*millisPrescaler);
+	SysTick->LOAD= (quanta*millisPrescaler) - 1;
 	SysTick->CTRL = 0x00000007;
 	osSchedulerLaunch();
 }
@@ -93,7 +98,7 @@ void SysTick_Handler (void) //  save r0,r1,r2,r3,r12,lr,pc,psr
 
 void osSchedulerLaunch(void){
 	__asm volatile (
-		"ldr     r0, =currentPt\n"
+		"ldr     r0, =currentPt \n"
 		"ldr     r2, [r0]       \n" // r2 =currentPt
 		"ldr     sp, [r2]       \n" //  sp = currentPt->stackPt
 		"pop     {r4-r11}       \n"

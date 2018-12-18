@@ -1,6 +1,6 @@
 # gnu arm toolchain must be already in system path    
 
-proj_name = 'STM32M4RTOS'
+proj_name = 'OwnRTOS_STM32F4'
 
 import os
 import os.path
