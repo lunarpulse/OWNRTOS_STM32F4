@@ -1,6 +1,7 @@
 # OwnRTOS
 
 ## Project Description
+
 A simple realtime operating system for ARM M4 architecture
 
 ## Inspiration
@@ -10,7 +11,7 @@ A cross platfrom code is required for this project.
 
 Share with others and make it opensource.
 
-#Requirements
+## Requirements
 
 * eclipse
 * eclipse GNU MCU
@@ -33,7 +34,7 @@ Share with others and make it opensource.
 * Very light
 * Customisable
 
-## Limitation
+## Limitations
 
 * No supporting for Percepio Tracer or system view from Jagger yet
 * No queue yet -> Atomic Circular buffer will come in.

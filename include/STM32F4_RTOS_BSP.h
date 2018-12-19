@@ -91,11 +91,17 @@ void TIM4_Init_Start(void);
 void TIM5_Init_Start(void);
 
 /**
+  *@brief  Initialize On board LED
+	*@input  None
+	*@retval None
+	*/
+void LED_Init(void);
+
+/**
   *@brief  Initialize 4 GPIOC pins as output
 	*@input  None
 	*@retval None
 	*/
-	
 void Probe_Init(void);
 
 

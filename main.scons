@@ -52,7 +52,6 @@ cortex_m4_flags = [
 # defines
 env.Append(CPPDEFINES = [
     'USE_HAL_DRIVER',
-    'OS_USE_SEMIHOSTING',
     'DEBUG',
     'USE_FULL_ASSERT',
     'TRACE',
@@ -70,7 +69,7 @@ env.Append(CFLAGS = [
 env.Append(CCFLAGS = [
     '-ffreestanding',
     '-fno-move-loop-invariants',
-    '-O3', 
+    '-Og', 
     '-fmessage-length=0',
     '-fsigned-char',
     '-ffunction-sections',

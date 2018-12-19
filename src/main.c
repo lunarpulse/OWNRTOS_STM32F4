@@ -25,6 +25,9 @@
 
 volatile uint32_t count0,count1,count2;
 
+unsigned short leds[4]= {GPIO_PIN_12,GPIO_PIN_13,GPIO_PIN_14,GPIO_PIN_15};
+volatile unsigned short led = 0;
+
 uint32_t adc_sensorValue;
 
 void drawInfoBar(void);
@@ -77,6 +80,10 @@ main(int argc, char* argv[])
 {
 	HAL_Init();
 
+	LED_Init();
+	HAL_GPIO_TogglePin(GPIOD,leds[led++%4]);
+
+	TIM2_Init_Start();
 	TIM3_Init_Start();
 	TIM4_Init_Start();
 	//TIM5_Init_Start();
@@ -111,7 +118,22 @@ void plotData(void)
 	ST7735_PlotPoint(adc_sensorValue,GREEN);
 	ST7735_PlotIncrement();
 }
+extern int counter4;
+/*
+ * A simple periodic timer with a Timer
+ * 500 ms , 1 Hz toggle of LEDs
+ */
+void TIM4_IRQHandler(void)
+{
+	//HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_13);
+	counter4++;
+	//HAL_GPIO_TogglePin(GPIOD,leds[led%4]);
+	//HAL_GPIO_TogglePin(GPIOD,leds[(led-1)%4]);
+	HAL_GPIO_TogglePin(GPIOD,leds[(led++)%4]);
 
+	HAL_TIM_IRQHandler(&htim4);
+
+}
 #pragma GCC diagnostic pop
 
 // ----------------------------------------------------------------------------
