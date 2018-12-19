@@ -81,7 +81,7 @@ main(int argc, char* argv[])
 	HAL_Init();
 
 	LED_Init();
-	HAL_GPIO_TogglePin(GPIOD,leds[led++%4]);
+	//HAL_GPIO_TogglePin(GPIOD,leds[led++%4]);
 
 	TIM2_Init_Start();
 	TIM3_Init_Start();
@@ -125,15 +125,20 @@ extern int counter4;
  */
 void TIM4_IRQHandler(void)
 {
-	//HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_13);
+	HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_12);
 	counter4++;
 	//HAL_GPIO_TogglePin(GPIOD,leds[led%4]);
 	//HAL_GPIO_TogglePin(GPIOD,leds[(led-1)%4]);
-	HAL_GPIO_TogglePin(GPIOD,leds[(led++)%4]);
+	//HAL_GPIO_TogglePin(GPIOD,leds[(led++)%4]);
 
 	HAL_TIM_IRQHandler(&htim4);
 
 }
+
+void PeriodicTask0(void){
+	HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_15);
+}
+
 #pragma GCC diagnostic pop
 
 // ----------------------------------------------------------------------------

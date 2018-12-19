@@ -81,6 +81,18 @@ void osKernel_Launch(uint32_t quanta){
 void osThread_Yield(void){
 	SYSTICK_INT_CNTL = 0x04000000; //Trigger SysTick Interrupt
 }
+
+uint32_t period_tick;
+
+void osScheduler_RoundRobin(void)
+{
+	if((++period_tick)==PERIOD){
+		(*PeriodicTask0)();
+		period_tick=0;
+	}
+	currentPt =  currentPt->nextPt;
+}
+
 /*
 void SysTick_Handler (void) //  save r0,r1,r2,r3,r12,lr,pc,psr
 {

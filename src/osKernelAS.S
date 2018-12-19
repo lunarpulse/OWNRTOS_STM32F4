@@ -5,7 +5,6 @@
   .extern  currentPt
   .global  SysTick_Handler
   .global  osSchedulerLaunch
-
 .align
 
 .section  .text.SysTick_Handler,"ax"
@@ -16,8 +15,10 @@ SysTick_Handler:          @ save r0,r1,r2,r3,r12,lr,pc,psr
     ldr     r0, =currentPt  @ R0 POINTS TO currentPt
     ldr     r1, [r0]        @ R1= currentPt
     str     sp, [r1]
-    ldr     r1, [r1,#4]     @ R1 =currentPt->NEXT
-    str     r1, [r0]        @ currentPt =R1          Circulating to the next task, a changeover happens here!
+    push    {r0, lr}
+    bl      osScheduler_RoundRobin
+    POP		{R0,LR}
+	LDR		R1,[R0]          @R1= currentPt i.e. New thread
     ldr     sp, [r1]        @ sp= currentPt->STACKpT Pointing its own stack memory
     pop     {r4-r11}
     cpsie   i
