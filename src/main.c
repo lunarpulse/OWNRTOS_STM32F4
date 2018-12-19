@@ -23,6 +23,10 @@
 #define YMAX 5000
 #define YMIN 0
 
+extern uint32_t period0;
+extern uint32_t period1;
+extern uint32_t period2;
+
 volatile uint32_t count0,count1,count2;
 
 unsigned short leds[4]= {GPIO_PIN_12,GPIO_PIN_13,GPIO_PIN_14,GPIO_PIN_15};
@@ -90,6 +94,10 @@ main(int argc, char* argv[])
 
 	Probe_Init();
 
+	period0 = 85;
+	period1 = 65;
+	period2 = 130;
+
 	osKernel_Init();
 	osKernel_Add_Threads(&Task0,&Task1,&Task2);
 	osKernel_Launch(QUANTA);
@@ -136,6 +144,14 @@ void TIM4_IRQHandler(void)
 }
 
 void PeriodicTask0(void){
+	HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_13);
+}
+
+void PeriodicTask1(void){
+	HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_14);
+}
+
+void PeriodicTask2(void){
 	HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_15);
 }
 

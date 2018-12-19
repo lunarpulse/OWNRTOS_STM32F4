@@ -86,10 +86,26 @@ uint32_t period_tick;
 
 void osScheduler_RoundRobin(void)
 {
-	if((++period_tick)==PERIOD){
+	int p0_modulus = (++period_tick) % period0;
+	int p1_modulus =     period_tick % period1;
+	int p2_modulus =     period_tick % period2;
+
+	if(!p0_modulus){
 		(*PeriodicTask0)();
-		period_tick=0;
 	}
+
+	if(!p1_modulus){
+		(*PeriodicTask1)();
+	}
+
+	if(!p2_modulus){
+		(*PeriodicTask2)();
+	}
+
+	if(!(p0_modulus|p1_modulus|p2_modulus)){
+		period_tick = 0;
+	}
+
 	currentPt =  currentPt->nextPt;
 }
 
