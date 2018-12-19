@@ -133,7 +133,8 @@ extern int counter4;
  */
 void TIM4_IRQHandler(void)
 {
-	HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_12);
+	GPIOD->ODR ^= GPIO_PIN_12;
+	//HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_12);
 	counter4++;
 	//HAL_GPIO_TogglePin(GPIOD,leds[led%4]);
 	//HAL_GPIO_TogglePin(GPIOD,leds[(led-1)%4]);
@@ -144,15 +145,18 @@ void TIM4_IRQHandler(void)
 }
 
 void PeriodicTask0(void){
-	HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_13);
+	GPIOD->ODR ^= GPIO_PIN_13;
+	//HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_13);
 }
 
 void PeriodicTask1(void){
-	HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_14);
+	GPIOD->ODR ^= GPIO_PIN_14;
+	//HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_14);
 }
 
 void PeriodicTask2(void){
-	HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_15);
+	GPIOD->ODR ^= GPIO_PIN_15;
+	//HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_15);
 }
 
 #pragma GCC diagnostic pop
