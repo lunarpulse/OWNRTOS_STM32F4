@@ -1,6 +1,7 @@
 # OwnRTOS
 
 ## Project Description
+
 A simple realtime operating system for ARM M4 architecture
 
 ## Inspiration
@@ -10,7 +11,7 @@ A cross platfrom code is required for this project.
 
 Share with others and make it opensource.
 
-#Requirements
+## Requirements
 
 * eclipse
 * eclipse GNU MCU
@@ -22,6 +23,40 @@ Share with others and make it opensource.
 ### Optional
 
 * STM32CUBEMX
+
+## Hardware setup
+
+### STM32F4-DISCO Pin Assignment
+
+PROBE
+
+Probe 0  : PC1
+
+Probe 1	 : PC2
+
+Probe 2  : PC4
+
+Probe 3  : PC5
+
+### ADC
+
+ADC      : PA4
+
+
+### GLCD ST7735
+
+
+SCK  			:   PA5
+
+MOSI (SDA)		:   PA7
+
+RS				:	PA4
+
+DC				:	PA3
+
+CS				:	PA2
+
+[ref](https://www.stm32duino.com/viewtopic.php?t=486)
 
 ## Source
 
