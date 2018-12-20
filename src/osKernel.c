@@ -120,6 +120,44 @@ void osBinarySemaphore_Signal_Wait(int32_t * semaphore){
 }
 
 
+void osBinaryCooperativeSemaphore_Init(int32_t * semaphore, int32_t value){
+	*semaphore = value;
+}
+
+void osBinaryCooperativeSemaphore_Signal_Set(int32_t * semaphore){
+	asm("cpsid i" : /* Outputs */
+					: /* Inputs */
+					: "memory" /* Clobbers */);
+	*semaphore += 1;
+	asm("cpsie i" : /* Outputs */
+				: /* Inputs */
+				: "memory" /* Clobbers */);
+}
+
+void osBinaryCooperativeSemaphore_Signal_Wait(int32_t * semaphore){
+	asm("cpsid i" : /* Outputs */
+						: /* Inputs */
+						: "memory" /* Clobbers */);
+
+	while(*semaphore<=0){ //waiting for semaphore
+		asm("cpsid i" : /* Outputs */
+							: /* Inputs */
+							: "memory" /* Clobbers */);
+
+		osThread_Yield();
+
+		asm("cpsie i" : /* Outputs */
+						: /* Inputs */
+						: "memory" /* Clobbers */);
+	}
+
+	*semaphore -= 1;  // consume semaphore
+
+	asm("cpsie i" : /* Outputs */
+					: /* Inputs */
+					: "memory" /* Clobbers */);
+
+}
 
 /*
 void SysTick_Handler (void) //  save r0,r1,r2,r3,r12,lr,pc,psr

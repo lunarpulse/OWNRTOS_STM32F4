@@ -18,4 +18,8 @@ void osBinarySemaphore_Init(int32_t * semaphore, int32_t value);
 void osBinarySemaphore_Signal_Wait(int32_t * semaphore);
 void osBinarySemaphore_Signal_Set(int32_t * semaphore);
 
+void osBinaryCooperativeSemaphore_Init(int32_t * semaphore, int32_t value);
+void osBinaryCooperativeSemaphore_Signal_Wait(int32_t * semaphore);
+void osBinaryCooperativeSemaphore_Signal_Set(int32_t * semaphore);
+
 #endif /* INCLUDE_OSKERNEL_H_ */
