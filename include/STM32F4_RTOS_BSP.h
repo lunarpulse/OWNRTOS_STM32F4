@@ -89,7 +89,13 @@ void TIM4_Init_Start(void);
 	*@retval None
 	*/
 void TIM5_Init_Start(void);
+/**
+  *@brief  Initialize 4 LED on GPIOC_PIN_12 - GPIOC_PIN_15
+	*@input  None
+	*@retval None
+	*/
 
+void LED_Init(void);
 /**
   *@brief  Initialize 4 GPIOC pins as output
 	*@input  None

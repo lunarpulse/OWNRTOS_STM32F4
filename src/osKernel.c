@@ -82,6 +82,42 @@ void osThread_Yield(void){
 	SysTick->VAL = 0;
 	SYSTICK_INT_CNTL = 0x04000000; //Trigger SysTick Interrupt
 }
+
+void osBinarySemaphore_Init(int32_t * semaphore, int32_t value){
+	*semaphore = value;
+}
+
+void osBinarySemaphore_Signal_Wait(int32_t * semaphore){
+	asm("cpsid i" : /* Outputs */
+					: /* Inputs */
+					: "memory" /* Clobbers */);
+	*semaphore += 1;
+	asm("cpsie i" : /* Outputs */
+				: /* Inputs */
+				: "memory" /* Clobbers */);
+}
+
+void osBinarySemaphore_Signal_Set(int32_t * semaphore){
+	asm("cpsid i" : /* Outputs */
+						: /* Inputs */
+						: "memory" /* Clobbers */);
+
+	while(*semaphore<=0){ //waiting for semaphore
+		asm("cpsid i" : /* Outputs */
+							: /* Inputs */
+							: "memory" /* Clobbers */);
+		asm("cpsie i" : /* Outputs */
+						: /* Inputs */
+						: "memory" /* Clobbers */);
+	}
+
+	*semaphore -= 1;  // consume semaphore
+
+	asm("cpsie i" : /* Outputs */
+					: /* Inputs */
+					: "memory" /* Clobbers */);
+
+}
 /*
 void SysTick_Handler (void) //  save r0,r1,r2,r3,r12,lr,pc,psr
 {

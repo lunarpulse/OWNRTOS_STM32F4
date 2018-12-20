@@ -107,7 +107,7 @@ static void  writecommand(uint8_t c) ;
 void ST7735_SetCursor(uint32_t newX, uint32_t newY);
 void standard_Init_Cmd(void);
 
-void ST7735_Init(void) {
+int ST7735_Init(void) {
 
  ST7735_GPIO_Init();
  ST7735_SPI_Init();
@@ -115,7 +115,9 @@ void ST7735_Init(void) {
 	
   ST7735_SetCursor(0,0);
   StTextColor = YELLOW;
-  ST7735_FillScreen(WHITE);        
+  ST7735_FillScreen(WHITE);
+
+  return 1;
 }
 void ST7735_SetCursor(uint32_t newX, uint32_t newY){
   if((newX > 20) || (newY > 15)){       

@@ -19,11 +19,12 @@
 #pragma GCC diagnostic ignored "-Wmissing-declarations"
 #pragma GCC diagnostic ignored "-Wreturn-type"
 
-#define QUANTA	10
+#define QUANTA	250
 #define YMAX 5000
 #define YMIN 0
 
 volatile uint32_t count0,count1,count2;
+int32_t binarySemaphore0,binarySemaphore1;
 
 uint32_t adc_sensorValue;
 
@@ -41,33 +42,43 @@ void Task0(void)
 		HAL_ADC_PollForConversion(&hadc1, 10);
 		adc_sensorValue = HAL_ADC_GetValue(&hadc1);
 		count0++;
+		GPIOD->ODR ^= GPIO_PIN_15;
+		GPIOD->ODR ^= GPIO_PIN_12;
 		osThread_Yield();
 
 	}
 
 }
-
+static volatile int ST7735Inited = 0;
 void Task1(void)
 {
-	ST7735_Init();
-	drawaxes();
-
+	ST7735Inited = ST7735_Init();
+	GPIOD->ODR ^= GPIO_PIN_14;
 	while(1)
 	{
-		drawInfoBar();
-		plotData();
+		osBinarySemaphore_Signal_Wait(&binarySemaphore1);
+		GPIOD->ODR ^= GPIO_PIN_13;
+		GPIOD->ODR ^= GPIO_PIN_14;
+		//ST7735_DrawString(3, 7, "####This is Task 1####", GREEN);
 		count1++;
-		osThread_Yield();
+		osBinarySemaphore_Signal_Set(&binarySemaphore0);
 	}
 
 }
 
 void Task2(void)
 {
+	while(!ST7735Inited){
+		osThread_Yield();
+	}
 	while(1)
 	{
+		osBinarySemaphore_Signal_Wait(&binarySemaphore0);
+		GPIOD->ODR ^= GPIO_PIN_14;
+		GPIOD->ODR ^= GPIO_PIN_13;
+		//ST7735_DrawString(3, 7, "####This is Task 2####", BLUE);
 		count2++;
-		osThread_Yield();
+		osBinarySemaphore_Signal_Set(&binarySemaphore1);
 	}
 
 }
@@ -77,11 +88,16 @@ main(int argc, char* argv[])
 {
 	HAL_Init();
 
+	TIM2_Init_Start();
 	TIM3_Init_Start();
 	TIM4_Init_Start();
-	//TIM5_Init_Start();
 
+	LED_Init();
+	GPIOD->ODR ^= GPIO_PIN_15;
 	Probe_Init();
+
+	osBinarySemaphore_Init(&binarySemaphore0,1);
+	osBinarySemaphore_Init(&binarySemaphore1,0);
 
 	osKernel_Init();
 	osKernel_Add_Threads(&Task0,&Task1,&Task2);

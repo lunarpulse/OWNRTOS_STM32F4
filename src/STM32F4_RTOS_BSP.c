@@ -66,9 +66,9 @@ void TIM4_Init(void)
   TIM_MasterConfigTypeDef sMasterConfig;
 
   htim4.Instance = TIM4;
-  htim4.Init.Prescaler = 16000;
+  htim4.Init.Prescaler = 16;
   htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim4.Init.Period = 1;   //ms
+  htim4.Init.Period = 100;   //0.1ms
   htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   HAL_TIM_Base_Init(&htim4);
  
@@ -253,13 +253,11 @@ void TIM3_IRQHandler(void)
 	HAL_TIM_IRQHandler(&htim3);
   
 }
-extern uint32_t uwTick;
 /**
 * @brief This function handles TIM4 global interrupt.
 */
-void TIM4_IRQHandler(void)
+__weak void TIM4_IRQHandler(void)
 {
-  uwTick++;
   counter4++;
   HAL_TIM_IRQHandler(&htim4);
 
@@ -268,7 +266,7 @@ void TIM4_IRQHandler(void)
 /**
 * @brief This function handles TIM5 global interrupt.
 */
-void TIM5_IRQHandler(void)
+__weak void TIM5_IRQHandler(void)
 {
  counter5++;
   HAL_TIM_IRQHandler(&htim5);
@@ -371,6 +369,18 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* hadc)
 
 //*******************Start of Probe APIs***************************//
 GPIO_InitTypeDef GPIO_InitStruct;
+void LED_Init(void){
+	__HAL_RCC_GPIOD_CLK_ENABLE();
+
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15, GPIO_PIN_RESET);
+
+
+		GPIO_InitStruct.Pin    = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
+		GPIO_InitStruct.Mode   = GPIO_MODE_OUTPUT_PP;
+		GPIO_InitStruct.Pull   = GPIO_NOPULL;
+		GPIO_InitStruct.Speed  = GPIO_SPEED_FREQ_LOW;
+		HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+}
 
 void Probe_Init(void)
 {

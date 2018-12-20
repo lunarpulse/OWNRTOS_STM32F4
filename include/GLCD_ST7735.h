@@ -79,7 +79,7 @@ void spi2_16b_init(void);
 	*@input  None
 	*@retval None
 	*/
-void ST7735_Init(void);
+int ST7735_Init(void);
 
 
 /**
