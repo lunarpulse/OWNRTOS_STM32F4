@@ -24,7 +24,7 @@
 #define YMIN 0
 
 volatile uint32_t count0,count1,count2;
-int32_t binaryCoopSemaphore0,binaryCoopSemaphore1;
+int32_t binarySemaphore0,binarySemaphore1;
 
 uint32_t adc_sensorValue;
 
@@ -38,12 +38,14 @@ void Task0(void)
 	ADC1_Init();
 	while(1)
 	{
+		GPIOD->ODR ^= GPIO_PIN_12;
 		HAL_ADC_Start(&hadc1);
+		GPIOD->ODR ^= GPIO_PIN_13;
 		HAL_ADC_PollForConversion(&hadc1, 10);
+		GPIOD->ODR ^= GPIO_PIN_14;
 		adc_sensorValue = HAL_ADC_GetValue(&hadc1);
 		count0++;
 		GPIOD->ODR ^= GPIO_PIN_15;
-		GPIOD->ODR ^= GPIO_PIN_12;
 		osThread_Yield();
 
 	}
@@ -56,12 +58,14 @@ void Task1(void)
 	GPIOD->ODR ^= GPIO_PIN_14;
 	while(1)
 	{
-		osBinaryCooperativeSemaphore_Signal_Wait(&binaryCoopSemaphore1);
-		GPIOD->ODR ^= GPIO_PIN_13;
+		GPIOD->ODR ^= GPIO_PIN_12;
+
+		osBinarySemaphore_Signal_Set(&binarySemaphore0);
+
+		osBinarySemaphore_Signal_Wait(&binarySemaphore1);
 		GPIOD->ODR ^= GPIO_PIN_14;
 		//ST7735_DrawString(3, 7, "####This is Task 1####", GREEN);
 		count1++;
-		osBinaryCooperativeSemaphore_Signal_Set(&binaryCoopSemaphore0);
 	}
 
 }
@@ -73,12 +77,14 @@ void Task2(void)
 	}
 	while(1)
 	{
-		osBinaryCooperativeSemaphore_Signal_Wait(&binaryCoopSemaphore0);
-		GPIOD->ODR ^= GPIO_PIN_14;
 		GPIOD->ODR ^= GPIO_PIN_13;
+
+		osBinarySemaphore_Signal_Set(&binarySemaphore1);
+
+		osBinarySemaphore_Signal_Wait(&binarySemaphore0);
+		GPIOD->ODR ^= GPIO_PIN_15;
 		//ST7735_DrawString(3, 7, "####This is Task 2####", BLUE);
 		count2++;
-		osBinaryCooperativeSemaphore_Signal_Set(&binaryCoopSemaphore1);
 	}
 
 }
@@ -93,11 +99,12 @@ main(int argc, char* argv[])
 	TIM4_Init_Start();
 
 	LED_Init();
-	GPIOD->ODR ^= GPIO_PIN_15;
+
+
 	Probe_Init();
 
-	osBinaryCooperativeSemaphore_Init(&binaryCoopSemaphore0,1);
-	osBinaryCooperativeSemaphore_Init(&binaryCoopSemaphore1,0);
+	osBinarySemaphore_Init(&binarySemaphore0,0);
+	osBinarySemaphore_Init(&binarySemaphore1,0);
 
 	osKernel_Init();
 	osKernel_Add_Threads(&Task0,&Task1,&Task2);
