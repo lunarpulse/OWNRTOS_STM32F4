@@ -87,7 +87,7 @@ void osBinarySemaphore_Init(int32_t * semaphore, int32_t value){
 	*semaphore = value;
 }
 
-void osBinarySemaphore_Signal_Wait(int32_t * semaphore){
+void osBinarySemaphore_Signal_Set(int32_t * semaphore){
 	asm("cpsid i" : /* Outputs */
 					: /* Inputs */
 					: "memory" /* Clobbers */);
@@ -97,7 +97,7 @@ void osBinarySemaphore_Signal_Wait(int32_t * semaphore){
 				: "memory" /* Clobbers */);
 }
 
-void osBinarySemaphore_Signal_Set(int32_t * semaphore){
+void osBinarySemaphore_Signal_Wait(int32_t * semaphore){
 	asm("cpsid i" : /* Outputs */
 						: /* Inputs */
 						: "memory" /* Clobbers */);
@@ -118,6 +118,9 @@ void osBinarySemaphore_Signal_Set(int32_t * semaphore){
 					: "memory" /* Clobbers */);
 
 }
+
+
+
 /*
 void SysTick_Handler (void) //  save r0,r1,r2,r3,r12,lr,pc,psr
 {
