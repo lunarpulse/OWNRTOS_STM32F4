@@ -79,6 +79,7 @@ void osKernel_Launch(uint32_t quanta){
 	osSchedulerLaunch();
 }
 void osThread_Yield(void){
+	SysTick->VAL = 0;
 	SYSTICK_INT_CNTL = 0x04000000; //Trigger SysTick Interrupt
 }
 
